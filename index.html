@@ -1,0 +1,1965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Character Archive ✿ Pastel OC Studio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Quicksand & Nunito -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Quicksand', 'sans-serif'],
+                        sans: ['Nunito', 'sans-serif'],
+                    },
+                    colors: {
+                        sakura: {
+                            50: '#FFF5F8',
+                            100: '#FFE8F0',
+                            200: '#FFD1E1',
+                            300: '#FFACC9',
+                            400: '#FF7AA8',
+                            500: '#F44D88',
+                            600: '#DF2B6B',
+                            700: '#BC1C54',
+                            800: '#9B1A47',
+                            900: '#811B3F',
+                        },
+                        cream: {
+                            50: '#FFFDFB',
+                            100: '#FFF8F4',
+                            200: '#FCEEE6',
+                        },
+                        rosegold: {
+                            300: '#E8B4B8',
+                            400: '#D89A9E',
+                            500: '#B76E79',
+                        }
+                    },
+                    boxShadow: {
+                        'cute': '0 8px 24px -4px rgba(244, 77, 136, 0.12), 0 2px 6px -1px rgba(244, 77, 136, 0.06)',
+                        'cute-hover': '0 12px 28px -4px rgba(244, 77, 136, 0.2), 0 4px 10px -1px rgba(244, 77, 136, 0.1)',
+                        'sticker': '3px 3px 0px #FFD1E1',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbars & Decorative Patterns */
+        body {
+            background-color: #FFF5F8;
+            background-image: 
+                radial-gradient(#FFD1E1 1.25px, transparent 1.25px),
+                radial-gradient(#FFE8F0 1.25px, #FFF5F8 1.25px);
+            background-size: 32px 32px;
+            background-position: 0 0, 16px 16px;
+            color: #5C3A47;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFE8F0;
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFACC9;
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF7AA8;
+        }
+
+        .dotted-divider {
+            background-image: linear-gradient(to right, #FFACC9 50%, rgba(255,255,255,0) 0%);
+            background-position: bottom;
+            background-size: 10px 2px;
+            background-repeat: repeat-x;
+        }
+
+        /* Print styles for Character Sheet */
+        @media print {
+            body {
+                background: white !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-only-sheet {
+                box-shadow: none !important;
+                border: 2px solid #FFD1E1 !important;
+                margin: 0 !important;
+                padding: 1rem !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col selection:bg-sakura-200 selection:text-sakura-800">
+
+    <!-- Toast Notification Container (Replaces alert) -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Custom Confirmation Modal (Replaces confirm) -->
+    <div id="confirm-modal" class="fixed inset-0 bg-sakura-900/30 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-cream-50 border-2 border-sakura-200 rounded-3xl p-6 max-w-sm w-full shadow-cute transform transition-all">
+            <div class="flex items-center gap-3 text-sakura-600 mb-3">
+                <span class="text-2xl">🌸</span>
+                <h3 id="confirm-title" class="font-display font-bold text-lg">Are you sure?</h3>
+            </div>
+            <p id="confirm-message" class="text-sm text-[#7A5262] mb-6 leading-relaxed">This action cannot be undone.</p>
+            <div class="flex justify-end gap-2">
+                <button id="confirm-cancel-btn" class="px-4 py-2 rounded-2xl text-sm font-bold text-[#7A5262] bg-sakura-100 hover:bg-sakura-200 transition">Cancel</button>
+                <button id="confirm-ok-btn" class="px-4 py-2 rounded-2xl text-sm font-bold text-white bg-sakura-500 hover:bg-sakura-600 shadow-sm transition">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inspiration / Spark Modal -->
+    <div id="spark-modal" class="fixed inset-0 bg-sakura-900/30 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-cream-50 border-2 border-sakura-200 rounded-3xl p-6 max-w-lg w-full shadow-cute">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">✨</span>
+                    <h3 class="font-display font-bold text-xl text-sakura-700">Creative Spark Generator</h3>
+                </div>
+                <button onclick="closeModal('spark-modal')" class="p-2 rounded-full hover:bg-sakura-100 text-sakura-500 transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <p class="text-xs text-[#8C6273] mb-4">Need a dash of inspiration? Roll for cute quirks, wardrobe pieces, or secret plot hooks!</p>
+            
+            <div class="space-y-3 mb-5">
+                <div class="bg-sakura-50 border border-sakura-200 rounded-2xl p-3.5">
+                    <div class="text-[11px] font-bold uppercase tracking-wider text-sakura-500 mb-1">🎀 Quirk & Habit</div>
+                    <p id="spark-quirk" class="text-sm font-semibold text-[#5C3A47]">Collects pressed flowers inside antique spellbooks.</p>
+                </div>
+                <div class="bg-sakura-50 border border-sakura-200 rounded-2xl p-3.5">
+                    <div class="text-[11px] font-bold uppercase tracking-wider text-sakura-500 mb-1">👗 Signature Item / Wardrobe</div>
+                    <p id="spark-wardrobe" class="text-sm font-semibold text-[#5C3A47]">A lace-trimmed strawberry beret with a tiny silver bell.</p>
+                </div>
+                <div class="bg-sakura-50 border border-sakura-200 rounded-2xl p-3.5">
+                    <div class="text-[11px] font-bold uppercase tracking-wider text-sakura-500 mb-1">📜 Backstory Hook</div>
+                    <p id="spark-lore" class="text-sm font-semibold text-[#5C3A47]">Accidentally traded their shadow to a polite spirit at age seven.</p>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-2">
+                <button onclick="rollSparkPrompts()" class="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-sakura-100 hover:bg-sakura-200 text-sakura-700 font-bold text-sm transition">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i> Reroll Ideas
+                </button>
+                <button onclick="applySparkToCurrent()" class="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-sakura-400 to-sakura-500 hover:from-sakura-500 hover:to-sakura-600 text-white font-bold text-sm shadow-sm transition">
+                    <i data-lucide="plus-circle" class="w-4 h-4"></i> Add to Current Character
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Navigation Header -->
+    <header class="no-print sticky top-0 z-30 bg-cream-50/90 backdrop-blur-md border-b-2 border-sakura-200 px-4 py-3 shadow-sm">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <!-- Brand -->
+            <div class="flex items-center gap-3">
+                <button id="mobile-menu-btn" onclick="toggleSidebar()" class="lg:hidden p-2 rounded-2xl bg-sakura-100 text-sakura-600 hover:bg-sakura-200 transition" aria-label="Toggle Character Roster">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                </button>
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-sakura-300 to-sakura-500 flex items-center justify-center text-white text-xl shadow-sticker">
+                    🎀
+                </div>
+                <div>
+                    <h1 class="font-display font-bold text-xl sm:text-2xl text-sakura-700 tracking-tight flex items-center gap-1.5">
+                        The Character Archive
+                        <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-sakura-100 text-sakura-600 border border-sakura-200">v2.0</span>
+                    </h1>
+                    <p class="text-xs text-[#8C6273] hidden sm:block">Pastel Dossier & Fictional Character Studio ✿</p>
+                </div>
+            </div>
+
+            <!-- Global Actions -->
+            <div class="flex flex-wrap items-center gap-2">
+                <button onclick="openSparkModal()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-sakura-100 hover:bg-sakura-200 text-sakura-700 font-bold text-xs sm:text-sm transition border border-sakura-200">
+                    <span>✨</span>
+                    <span class="hidden md:inline">Spark Prompt</span>
+                </button>
+
+                <button onclick="exportJSON()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-cream-100 hover:bg-sakura-100 text-[#6D4756] font-bold text-xs sm:text-sm transition border border-sakura-200" title="Export Backup JSON">
+                    <i data-lucide="download" class="w-4 h-4 text-sakura-500"></i>
+                    <span class="hidden md:inline">Export</span>
+                </button>
+
+                <label class="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-cream-100 hover:bg-sakura-100 text-[#6D4756] font-bold text-xs sm:text-sm transition border border-sakura-200 cursor-pointer" title="Import JSON">
+                    <i data-lucide="upload" class="w-4 h-4 text-sakura-500"></i>
+                    <span class="hidden md:inline">Import</span>
+                    <input type="file" id="import-json-input" accept=".json" class="hidden" onchange="importJSON(event)">
+                </label>
+
+                <button onclick="window.print()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-gradient-to-r from-sakura-400 to-sakura-500 hover:from-sakura-500 hover:to-sakura-600 text-white font-bold text-xs sm:text-sm shadow-sm transition">
+                    <i data-lucide="printer" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Print Sheet</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace Layout -->
+    <div class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-6 flex flex-col lg:flex-row gap-6 relative">
+        
+        <!-- Left Sidebar: Character Roster -->
+        <aside id="character-sidebar" class="no-print fixed inset-y-0 left-0 z-40 w-80 bg-cream-50 lg:bg-transparent lg:static lg:w-80 shrink-0 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col h-full lg:h-auto p-4 lg:p-0 border-r-2 border-sakura-200 lg:border-none shadow-xl lg:shadow-none">
+            <div class="bg-cream-50 border-2 border-sakura-200 rounded-3xl p-4 shadow-cute flex flex-col h-full lg:sticky lg:top-24 max-h-[calc(100vh-7rem)]">
+                <!-- Sidebar Header -->
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="font-display font-bold text-lg text-sakura-700 flex items-center gap-2">
+                        <span>📖</span> Roster (<span id="roster-count">0</span>)
+                    </h2>
+                    <button onclick="toggleSidebar()" class="lg:hidden p-1.5 rounded-xl bg-sakura-100 text-sakura-600">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Create New Character CTA -->
+                <button onclick="createNewCharacter()" class="w-full py-2.5 px-4 mb-3 rounded-2xl bg-gradient-to-r from-sakura-400 to-sakura-500 hover:from-sakura-500 hover:to-sakura-600 text-white font-display font-bold text-sm shadow-sm flex items-center justify-center gap-2 transition transform active:scale-[0.98]">
+                    <i data-lucide="plus" class="w-4 h-4"></i> New Character
+                </button>
+
+                <!-- Search & Role Filter -->
+                <div class="space-y-2 mb-3">
+                    <div class="relative">
+                        <i data-lucide="search" class="w-4 h-4 text-sakura-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                        <input type="text" id="roster-search" oninput="renderRoster()" placeholder="Search name, role, tag..." class="w-full pl-9 pr-3 py-2 rounded-2xl bg-sakura-50 border border-sakura-200 text-xs font-semibold text-[#5C3A47] placeholder-sakura-300 focus:outline-none focus:border-sakura-400">
+                    </div>
+                </div>
+
+                <!-- Character List -->
+                <div id="roster-list" class="flex-1 overflow-y-auto space-y-2 pr-1">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <!-- Footer Sample Loader -->
+                <div class="pt-3 mt-3 border-t border-sakura-100 flex items-center justify-between text-xs">
+                    <button onclick="loadSampleCharacters(true)" class="text-sakura-500 hover:text-sakura-700 font-bold flex items-center gap-1 transition">
+                        <span>🌸</span> Load Samples
+                    </button>
+                    <span class="text-[#9E7887] font-semibold">Auto-saved ✨</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Backdrop for Mobile Sidebar -->
+        <div id="sidebar-backdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-sakura-900/20 backdrop-blur-xs z-30 hidden lg:hidden"></div>
+
+        <!-- Main Workspace Content Area -->
+        <main id="main-workspace" class="flex-1 min-w-0">
+            <!-- Empty State (Shown only if 0 characters exist) -->
+            <div id="empty-state" class="hidden bg-cream-50 border-2 border-sakura-200 rounded-3xl p-10 text-center shadow-cute">
+                <div class="text-5xl mb-3">🧸</div>
+                <h2 class="font-display font-bold text-2xl text-sakura-700 mb-2">Your Archive is Waiting!</h2>
+                <p class="text-sm text-[#7A5262] max-w-md mx-auto mb-6">Create your first original character from scratch or load our pre-made pastel characters to explore all features.</p>
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button onclick="createNewCharacter()" class="px-5 py-2.5 rounded-2xl bg-sakura-500 hover:bg-sakura-600 text-white font-bold text-sm shadow-sm transition">
+                        + Create Blank Character
+                    </button>
+                    <button onclick="loadSampleCharacters(true)" class="px-5 py-2.5 rounded-2xl bg-sakura-100 hover:bg-sakura-200 text-sakura-700 font-bold text-sm transition">
+                        🌸 Load Sample Characters
+                    </button>
+                </div>
+            </div>
+
+            <!-- Active Character Container -->
+            <div id="character-workspace" class="space-y-5">
+                
+                <!-- Top Mode Switcher & Quick Controls Bar -->
+                <div class="no-print bg-cream-50 border-2 border-sakura-200 rounded-3xl p-3 sm:p-4 shadow-cute flex flex-wrap items-center justify-between gap-3">
+                    <!-- View Mode Segmented Pill -->
+                    <div class="inline-flex bg-sakura-100 p-1 rounded-2xl border border-sakura-200">
+                        <button id="btn-mode-sheet" onclick="setViewMode('sheet')" class="flex items-center gap-1.5 px-4 py-2 rounded-xl font-display font-bold text-xs sm:text-sm transition bg-white text-sakura-600 shadow-xs">
+                            <i data-lucide="sparkles" class="w-4 h-4"></i> Character Sheet
+                        </button>
+                        <button id="btn-mode-edit" onclick="setViewMode('edit')" class="flex items-center gap-1.5 px-4 py-2 rounded-xl font-display font-bold text-xs sm:text-sm transition text-[#7A5262] hover:text-sakura-600">
+                            <i data-lucide="edit-3" class="w-4 h-4"></i> Edit Details
+                        </button>
+                    </div>
+
+                    <!-- Character Utility Buttons -->
+                    <div class="flex items-center gap-2">
+                        <button onclick="duplicateCurrentCharacter()" class="p-2 sm:px-3 sm:py-2 rounded-2xl bg-sakura-50 hover:bg-sakura-100 text-sakura-600 border border-sakura-200 text-xs font-bold flex items-center gap-1.5 transition" title="Duplicate Character">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                            <span class="hidden sm:inline">Duplicate</span>
+                        </button>
+                        <button onclick="deleteCurrentCharacter()" class="p-2 sm:px-3 sm:py-2 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 text-xs font-bold flex items-center gap-1.5 transition" title="Delete Character">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            <span class="hidden sm:inline">Delete</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ========================================================= -->
+                <!-- VIEW 1: CHARACTER SHEET DOSSIER (SCRAPBOOK DISPLAY MODE)  -->
+                <!-- ========================================================= -->
+                <div id="view-sheet" class="print-only-sheet space-y-6">
+                    <!-- Hero Dossier Card -->
+                    <div class="bg-cream-50 border-2 border-sakura-200 rounded-3xl overflow-hidden shadow-cute relative">
+                        <!-- Top Aesthetic Banner -->
+                        <div id="sheet-banner" class="h-28 sm:h-36 w-full bg-gradient-to-r from-sakura-200 via-sakura-300 to-rosegold-300 relative overflow-hidden">
+                            <div class="absolute inset-0 opacity-30" style="background-image: radial-gradient(#fff 2px, transparent 2px); background-size: 18px 18px;"></div>
+                            <div class="absolute top-3 right-4 bg-white/80 backdrop-blur-xs px-3 py-1 rounded-full text-xs font-display font-bold text-sakura-700 border border-sakura-200 shadow-xs">
+                                ARCHIVE FILE #<span id="sheet-file-id">001</span> ✿
+                            </div>
+                        </div>
+
+                        <div class="px-5 sm:px-8 pb-7">
+                            <!-- Portrait + Header Info -->
+                            <div class="flex flex-col sm:flex-row sm:items-end gap-5 -mt-14 sm:-mt-16 mb-6 relative z-10">
+                                <!-- Avatar Frame -->
+                                <div id="sheet-avatar-frame" class="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl bg-white p-1.5 border-4 border-sakura-200 shadow-cute shrink-0 flex items-center justify-center overflow-hidden mx-auto sm:mx-0">
+                                    <!-- Image or Emoji injected via JS -->
+                                </div>
+
+                                <!-- Name & Badges -->
+                                <div class="flex-1 text-center sm:text-left">
+                                    <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1">
+                                        <span id="sheet-archetype-badge" class="px-3 py-0.5 rounded-full text-xs font-bold bg-sakura-100 text-sakura-700 border border-sakura-200">
+                                            Pastel Alchemist
+                                        </span>
+                                        <span id="sheet-mbti-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-cream-200 text-[#7A5262] border border-sakura-200">
+                                            INFP-T
+                                        </span>
+                                    </div>
+                                    <h2 id="sheet-name" class="font-display font-bold text-2xl sm:text-4xl text-[#4A2836] tracking-tight">
+                                        Character Name
+                                    </h2>
+                                    <p id="sheet-nickname" class="text-sm font-semibold text-sakura-500 mt-0.5">
+                                        "The Sugarplum Witch"
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Quote Box -->
+                            <div class="bg-sakura-50/90 border border-sakura-200 rounded-2xl p-4 mb-6 relative">
+                                <span class="text-2xl text-sakura-300 absolute top-2 left-3 font-serif">“</span>
+                                <p id="sheet-quote" class="text-center italic font-semibold text-sm sm:text-base text-[#6D4756] px-6">
+                                    A pinch of starlight and two spoons of strawberry sugar fixes almost any curse!
+                                </p>
+                                <span class="text-2xl text-sakura-300 absolute bottom-0 right-3 font-serif">”</span>
+                            </div>
+
+                            <!-- Quick Bio Grid + Stat Bars -->
+                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                                <!-- Identity Specs -->
+                                <div class="lg:col-span-7 bg-white/80 border border-sakura-100 rounded-2xl p-4">
+                                    <h3 class="font-display font-bold text-sm uppercase tracking-wider text-sakura-500 mb-3 flex items-center gap-1.5">
+                                        <span>🪪</span> Identity Profile
+                                    </h3>
+                                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
+                                        <div class="bg-sakura-50/60 p-2.5 rounded-xl border border-sakura-100">
+                                            <span class="block text-[11px] font-bold text-[#9E7887] uppercase">Age</span>
+                                            <span id="sheet-age" class="font-bold text-[#4A2836]">19</span>
+                                        </div>
+                                        <div class="bg-sakura-50/60 p-2.5 rounded-xl border border-sakura-100">
+                                            <span class="block text-[11px] font-bold text-[#9E7887] uppercase">Pronouns</span>
+                                            <span id="sheet-pronouns" class="font-bold text-[#4A2836]">She/Her</span>
+                                        </div>
+                                        <div class="bg-sakura-50/60 p-2.5 rounded-xl border border-sakura-100">
+                                            <span class="block text-[11px] font-bold text-[#9E7887] uppercase">Species / Role</span>
+                                            <span id="sheet-species" class="font-bold text-[#4A2836]">Human Witch</span>
+                                        </div>
+                                        <div class="bg-sakura-50/60 p-2.5 rounded-xl border border-sakura-100">
+                                            <span class="block text-[11px] font-bold text-[#9E7887] uppercase">Hometown</span>
+                                            <span id="sheet-origin" class="font-bold text-[#4A2836]">Velvet Vale</span>
+                                        </div>
+                                        <div class="bg-sakura-50/60 p-2.5 rounded-xl border border-sakura-100">
+                                            <span class="block text-[11px] font-bold text-[#9E7887] uppercase">Aesthetic</span>
+                                            <span id="sheet-aesthetic" class="font-bold text-[#4A2836]">Mori Coquette</span>
+                                        </div>
+                                        <div class="bg-sakura-50/60 p-2.5 rounded-xl border border-sakura-100">
+                                            <span class="block text-[11px] font-bold text-[#9E7887] uppercase">Voice Claim</span>
+                                            <span id="sheet-voice" class="font-bold text-[#4A2836]">Soft & Melodic</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Cute Heart/Star Stat Meters -->
+                                <div class="lg:col-span-5 bg-white/80 border border-sakura-100 rounded-2xl p-4">
+                                    <h3 class="font-display font-bold text-sm uppercase tracking-wider text-sakura-500 mb-3 flex items-center gap-1.5">
+                                        <span>⭐</span> Attribute Ratings
+                                    </h3>
+                                    <div id="sheet-stats-list" class="space-y-2.5">
+                                        <!-- Rendered via JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section Navigation Sub-tabs for Sheet View -->
+                    <div class="no-print flex flex-wrap gap-2">
+                        <button onclick="filterSheetSection('all')" data-sheet-tab="all" class="sheet-tab-btn px-4 py-2 rounded-2xl text-xs font-bold bg-sakura-500 text-white shadow-xs transition">✨ Full Dossier</button>
+                        <button onclick="filterSheetSection('personality')" data-sheet-tab="personality" class="sheet-tab-btn px-4 py-2 rounded-2xl text-xs font-bold bg-cream-50 text-[#7A5262] border border-sakura-200 hover:bg-sakura-100 transition">💖 Personality</button>
+                        <button onclick="filterSheetSection('wardrobe')" data-sheet-tab="wardrobe" class="sheet-tab-btn px-4 py-2 rounded-2xl text-xs font-bold bg-cream-50 text-[#7A5262] border border-sakura-200 hover:bg-sakura-100 transition">👗 Wardrobe & Palette</button>
+                        <button onclick="filterSheetSection('history')" data-sheet-tab="history" class="sheet-tab-btn px-4 py-2 rounded-2xl text-xs font-bold bg-cream-50 text-[#7A5262] border border-sakura-200 hover:bg-sakura-100 transition">📜 History & Lore</button>
+                        <button onclick="filterSheetSection('relationships')" data-sheet-tab="relationships" class="sheet-tab-btn px-4 py-2 rounded-2xl text-xs font-bold bg-cream-50 text-[#7A5262] border border-sakura-200 hover:bg-sakura-100 transition">💌 Relationships</button>
+                    </div>
+
+                    <!-- Dossier Section 1: Personality -->
+                    <section id="sheet-sec-personality" class="sheet-section bg-cream-50 border-2 border-sakura-200 rounded-3xl p-5 sm:p-7 shadow-cute space-y-5">
+                        <div class="flex items-center justify-between pb-3 dotted-divider">
+                            <h3 class="font-display font-bold text-xl text-sakura-700 flex items-center gap-2">
+                                <span>💖</span> Personality & Temperament
+                            </h3>
+                            <span id="sheet-enneagram" class="text-xs font-bold px-3 py-1 rounded-full bg-sakura-100 text-sakura-600">Type 2w3</span>
+                        </div>
+
+                        <!-- Core Traits Pills -->
+                        <div>
+                            <div class="text-xs font-bold uppercase tracking-wider text-[#9E7887] mb-2">Core Traits</div>
+                            <div id="sheet-traits" class="flex flex-wrap gap-2"></div>
+                        </div>
+
+                        <!-- Likes & Dislikes -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-sakura-50/70 border border-sakura-200 rounded-2xl p-4">
+                                <h4 class="font-display font-bold text-sm text-sakura-600 mb-2 flex items-center gap-1.5">
+                                    <span>🍓</span> Adores & Likes
+                                </h4>
+                                <ul id="sheet-likes" class="text-sm space-y-1.5 text-[#5C3A47]"></ul>
+                            </div>
+                            <div class="bg-cream-100 border border-sakura-200 rounded-2xl p-4">
+                                <h4 class="font-display font-bold text-sm text-[#8C6273] mb-2 flex items-center gap-1.5">
+                                    <span>🌧️</span> Dislikes & Pet Peeves
+                                </h4>
+                                <ul id="sheet-dislikes" class="text-sm space-y-1.5 text-[#5C3A47]"></ul>
+                            </div>
+                        </div>
+
+                        <!-- Strengths, Flaws & Quirks -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-white border border-sakura-100 rounded-2xl p-4">
+                                <div class="text-xs font-bold uppercase tracking-wider text-emerald-600 mb-1.5">🌟 Strengths</div>
+                                <p id="sheet-strengths" class="text-sm text-[#5C3A47] leading-relaxed"></p>
+                            </div>
+                            <div class="bg-white border border-sakura-100 rounded-2xl p-4">
+                                <div class="text-xs font-bold uppercase tracking-wider text-rose-500 mb-1.5">🥀 Flaws</div>
+                                <p id="sheet-flaws" class="text-sm text-[#5C3A47] leading-relaxed"></p>
+                            </div>
+                            <div class="bg-white border border-sakura-100 rounded-2xl p-4">
+                                <div class="text-xs font-bold uppercase tracking-wider text-sakura-500 mb-1.5">🎀 Habits & Quirks</div>
+                                <p id="sheet-quirks" class="text-sm text-[#5C3A47] leading-relaxed"></p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Dossier Section 2: Wardrobe & Aesthetic -->
+                    <section id="sheet-sec-wardrobe" class="sheet-section bg-cream-50 border-2 border-sakura-200 rounded-3xl p-5 sm:p-7 shadow-cute space-y-5">
+                        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 dotted-divider">
+                            <h3 class="font-display font-bold text-xl text-sakura-700 flex items-center gap-2">
+                                <span>👗</span> Wardrobe & Color Palette
+                            </h3>
+                            <!-- Color Swatches -->
+                            <div id="sheet-palette" class="flex items-center gap-2"></div>
+                        </div>
+
+                        <!-- Outfits Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-sakura-50/70 border border-sakura-200 rounded-2xl p-4">
+                                <div class="flex items-center gap-2 font-display font-bold text-sm text-sakura-700 mb-2">
+                                    <span>✨</span> Signature Outfit
+                                </div>
+                                <p id="sheet-outfit-signature" class="text-sm text-[#5C3A47] leading-relaxed"></p>
+                            </div>
+                            <div class="bg-white border border-sakura-200 rounded-2xl p-4">
+                                <div class="flex items-center gap-2 font-display font-bold text-sm text-[#6D4756] mb-2">
+                                    <span>☕</span> Casual / Everyday
+                                </div>
+                                <p id="sheet-outfit-casual" class="text-sm text-[#5C3A47] leading-relaxed"></p>
+                            </div>
+                            <div class="bg-white border border-sakura-200 rounded-2xl p-4">
+                                <div class="flex items-center gap-2 font-display font-bold text-sm text-[#6D4756] mb-2">
+                                    <span>👑</span> Formal / Special
+                                </div>
+                                <p id="sheet-outfit-formal" class="text-sm text-[#5C3A47] leading-relaxed"></p>
+                            </div>
+                        </div>
+
+                        <!-- Signature Accessories & Belongings -->
+                        <div>
+                            <div class="text-xs font-bold uppercase tracking-wider text-[#9E7887] mb-2.5">👜 Signature Accessories & Inventory</div>
+                            <div id="sheet-accessories" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+                        </div>
+                    </section>
+
+                    <!-- Dossier Section 3: History & Lore -->
+                    <section id="sheet-sec-history" class="sheet-section bg-cream-50 border-2 border-sakura-200 rounded-3xl p-5 sm:p-7 shadow-cute space-y-5">
+                        <div class="flex items-center justify-between pb-3 dotted-divider">
+                            <h3 class="font-display font-bold text-xl text-sakura-700 flex items-center gap-2">
+                                <span>📜</span> Backstory & Timeline
+                            </h3>
+                            <span id="sheet-origin-pill" class="text-xs font-bold px-3 py-1 rounded-full bg-cream-200 text-[#7A5262]">Origin: Unknown</span>
+                        </div>
+
+                        <!-- Summary Bio -->
+                        <div class="bg-white border border-sakura-100 rounded-2xl p-4">
+                            <div class="text-xs font-bold uppercase tracking-wider text-sakura-500 mb-1.5">📖 Biography Overview</div>
+                            <p id="sheet-backstory" class="text-sm text-[#5C3A47] leading-relaxed whitespace-pre-line"></p>
+                        </div>
+
+                        <!-- Timeline Milestones -->
+                        <div>
+                            <div class="text-xs font-bold uppercase tracking-wider text-[#9E7887] mb-3">⏳ Key Life Milestones</div>
+                            <div id="sheet-timeline" class="space-y-3 border-l-2 border-sakura-300 ml-3 pl-5"></div>
+                        </div>
+
+                        <!-- Secrets & Goals -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-sakura-50/80 border border-sakura-200 rounded-2xl p-4">
+                                <div class="text-xs font-bold uppercase tracking-wider text-sakura-600 mb-1.5">🤫 Hidden Secret</div>
+                                <p id="sheet-secret" class="text-sm text-[#5C3A47] leading-relaxed"></p>
+                            </div>
+                            <div class="bg-cream-100 border border-sakura-200 rounded-2xl p-4">
+                                <div class="text-xs font-bold uppercase tracking-wider text-[#8C6273] mb-1.5">🎯 Current Dream / Goal</div>
+                                <p id="sheet-goal" class="text-sm text-[#5C3A47] leading-relaxed"></p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Dossier Section 4: Relationships -->
+                    <section id="sheet-sec-relationships" class="sheet-section bg-cream-50 border-2 border-sakura-200 rounded-3xl p-5 sm:p-7 shadow-cute space-y-5">
+                        <div class="flex items-center justify-between pb-3 dotted-divider">
+                            <h3 class="font-display font-bold text-xl text-sakura-700 flex items-center gap-2">
+                                <span>💌</span> Relationships & Bonds
+                            </h3>
+                            <span id="sheet-rel-count" class="text-xs font-bold px-3 py-1 rounded-full bg-sakura-100 text-sakura-600">0 Connections</span>
+                        </div>
+
+                        <div id="sheet-relationships" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Relationship Cards injected here -->
+                        </div>
+                    </section>
+                </div>
+
+                <!-- ========================================================= -->
+                <!-- VIEW 2: INTERACTIVE CHARACTER BUILDER (EDIT MODE)         -->
+                <!-- ========================================================= -->
+                <div id="view-edit" class="hidden space-y-5">
+                    <!-- Editor Category Tabs -->
+                    <div class="bg-cream-50 border-2 border-sakura-200 rounded-3xl p-2 shadow-cute flex flex-wrap gap-1.5">
+                        <button onclick="setEditTab('identity')" data-edit-tab="identity" class="edit-tab-btn flex-1 min-w-[110px] py-2.5 px-3 rounded-2xl font-display font-bold text-xs sm:text-sm bg-sakura-500 text-white shadow-xs transition">
+                            🪪 Identity
+                        </button>
+                        <button onclick="setEditTab('personality')" data-edit-tab="personality" class="edit-tab-btn flex-1 min-w-[110px] py-2.5 px-3 rounded-2xl font-display font-bold text-xs sm:text-sm text-[#7A5262] hover:bg-sakura-100 transition">
+                            💖 Personality
+                        </button>
+                        <button onclick="setEditTab('wardrobe')" data-edit-tab="wardrobe" class="edit-tab-btn flex-1 min-w-[110px] py-2.5 px-3 rounded-2xl font-display font-bold text-xs sm:text-sm text-[#7A5262] hover:bg-sakura-100 transition">
+                            👗 Wardrobe
+                        </button>
+                        <button onclick="setEditTab('history')" data-edit-tab="history" class="edit-tab-btn flex-1 min-w-[110px] py-2.5 px-3 rounded-2xl font-display font-bold text-xs sm:text-sm text-[#7A5262] hover:bg-sakura-100 transition">
+                            📜 Lore & Timeline
+                        </button>
+                        <button onclick="setEditTab('relationships')" data-edit-tab="relationships" class="edit-tab-btn flex-1 min-w-[110px] py-2.5 px-3 rounded-2xl font-display font-bold text-xs sm:text-sm text-[#7A5262] hover:bg-sakura-100 transition">
+                            💌 Relationships
+                        </button>
+                    </div>
+
+                    <!-- EDIT TAB 1: IDENTITY & STATS -->
+                    <div id="edit-tab-identity" class="edit-tab-panel bg-cream-50 border-2 border-sakura-200 rounded-3xl p-5 sm:p-7 shadow-cute space-y-6">
+                        <h3 class="font-display font-bold text-xl text-sakura-700 border-b border-sakura-100 pb-3">🪪 Identity & Appearance</h3>
+                        
+                        <!-- Avatar Picker & Image URL -->
+                        <div class="bg-sakura-50/70 border border-sakura-200 rounded-2xl p-4 space-y-4">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-sakura-600">Portrait / Sticker Avatar</label>
+                            <div class="flex flex-col sm:flex-row items-center gap-4">
+                                <div id="edit-avatar-preview" class="w-24 h-24 rounded-3xl bg-white border-2 border-sakura-300 flex items-center justify-center text-4xl overflow-hidden shrink-0 shadow-xs">
+                                    🧙‍♀️
+                                </div>
+                                <div class="flex-1 w-full space-y-3">
+                                    <div>
+                                        <span class="text-xs font-semibold text-[#7A5262] block mb-1.5">Quick Cute Sticker Picker:</span>
+                                        <div id="emoji-picker-grid" class="flex flex-wrap gap-1.5">
+                                            <!-- Populated by JS -->
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="text-xs font-semibold text-[#7A5262] block mb-1">Or Custom Portrait Image URL (optional):</label>
+                                        <input type="url" id="inp-avatarUrl" oninput="updateField('avatarUrl', this.value)" placeholder="https://example.com/character-portrait.png" class="w-full px-3.5 py-2 rounded-xl bg-white border border-sakura-200 text-sm focus:outline-none focus:border-sakura-400">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Basic Fields Grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-[#7A5262] mb-1">Character Name *</label>
+                                <input type="text" id="inp-name" oninput="updateField('name', this.value)" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm font-semibold focus:outline-none focus:border-sakura-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-[#7A5262] mb-1">Nickname / Title</label>
+                                <input type="text" id="inp-nickname" oninput="updateField('nickname', this.value)" placeholder="e.g. The Starlight Baker" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm font-semibold focus:outline-none focus:border-sakura-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-[#7A5262] mb-1">Age / Birthday</label>
+                                <input type="text" id="inp-age" oninput="updateField('age', this.value)" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm font-semibold focus:outline-none focus:border-sakura-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-[#7A5262] mb-1">Pronouns</label>
+                                <input type="text" id="inp-pronouns" oninput="updateField('pronouns', this.value)" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm font-semibold focus:outline-none focus:border-sakura-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-[#7A5262] mb-1">Species / Class / Role</label>
+                                <input type="text" id="inp-species" oninput="updateField('species', this.value)" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm font-semibold focus:outline-none focus:border-sakura-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-[#7A5262] mb-1">Archetype / Alignment</label>
+                                <input type="text" id="inp-archetype" oninput="updateField('archetype', this.value)" placeholder="e.g. Chaotic Good Healer" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm font-semibold focus:outline-none focus:border-sakura-400">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-[#7A5262] mb-1">Signature Quote / Tagline</label>
+                            <input type="text" id="inp-quote" oninput="updateField('quote', this.value)" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm font-semibold focus:outline-none focus:border-sakura-400">
+                        </div>
+
+                        <!-- Stat Sliders -->
+                        <div class="bg-sakura-50/70 border border-sakura-200 rounded-2xl p-4">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-sakura-600 mb-3">⭐ Character Stats (1 to 5 Stars)</label>
+                            <div id="edit-stats-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <!-- Sliders injected via JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- EDIT TAB 2: PERSONALITY -->
+                    <div id="edit-tab-personality" class="edit-tab-panel hidden bg-cream-50 border-2 border-sakura-200 rounded-3xl p-5 sm:p-7 shadow-cute space-y-6">
+                        <h3 class="font-display font-bold text-xl text-sakura-700 border-b border-sakura-100 pb-3">💖 Personality & Quirks</h3>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-[#7A5262] mb-1">MBTI Type</label>
+                                <input type="text" id="inp-mbti" oninput="updateField('mbti', this.value)" placeholder="e.g. ENFP" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm font-semibold focus:outline-none focus:border-sakura-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-[#7A5262] mb-1">Enneagram</label>
+                                <input type="text" id="inp-enneagram" oninput="updateField('enneagram', this.value)" placeholder="e.g. Type 7w6" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm font-semibold focus:outline-none focus:border-sakura-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-[#7A5262] mb-1">Voice / Speaking Style</label>
+                                <input type="text" id="inp-voice" oninput="updateField('voice', this.value)" placeholder="e.g. Bubbly & poetic" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm font-semibold focus:outline-none focus:border-sakura-400">
+                            </div>
+                        </div>
+
+                        <!-- Pill Tag Editor for Core Traits -->
+                        <div>
+                            <label class="block text-xs font-bold text-[#7A5262] mb-1.5">Core Personality Traits (Press Enter or click Add)</label>
+                            <div class="flex gap-2 mb-2.5">
+                                <input type="text" id="new-trait-input" onkeydown="if(event.key==='Enter'){event.preventDefault(); addArrayTag('traits', 'new-trait-input');}" placeholder="Add a trait (e.g. Daydreamer)..." class="flex-1 px-3.5 py-2 rounded-2xl bg-white border border-sakura-200 text-sm focus:outline-none focus:border-sakura-400">
+                                <button type="button" onclick="addArrayTag('traits', 'new-trait-input')" class="px-4 py-2 rounded-2xl bg-sakura-500 text-white font-bold text-xs hover:bg-sakura-600 transition">+ Add</button>
+                            </div>
+                            <div id="edit-traits-list" class="flex flex-wrap gap-2"></div>
+                        </div>
+
+                        <!-- Likes & Dislikes -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-sakura-600 mb-1.5">🍓 Likes (One per line)</label>
+                                <textarea id="inp-likes" rows="4" oninput="updateLineArray('likes', this.value)" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm focus:outline-none focus:border-sakura-400"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-[#7A5262] mb-1.5">🌧️ Dislikes (One per line)</label>
+                                <textarea id="inp-dislikes" rows="4" oninput="updateLineArray('dislikes', this.value)" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm focus:outline-none focus:border-sakura-400"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-[#7A5262] mb-1">🌟 Key Strengths</label>
+                                <textarea id="inp-strengths" rows="3" oninput="updateField('strengths', this.value)" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm focus:outline-none focus:border-sakura-400"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-[#7A5262] mb-1">🥀 Flaws & Weaknesses</label>
+                                <textarea id="inp-flaws" rows="3" oninput="updateField('flaws', this.value)" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm focus:outline-none focus:border-sakura-400"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-[#7A5262] mb-1">🎀 Habits & Quirks</label>
+                                <textarea id="inp-quirks" rows="3" oninput="updateField('quirks', this.value)" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm focus:outline-none focus:border-sakura-400"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- EDIT TAB 3: WARDROBE & AESTHETIC -->
+                    <div id="edit-tab-wardrobe" class="edit-tab-panel hidden bg-cream-50 border-2 border-sakura-200 rounded-3xl p-5 sm:p-7 shadow-cute space-y-6">
+                        <h3 class="font-display font-bold text-xl text-sakura-700 border-b border-sakura-100 pb-3">👗 Wardrobe & Visual Aesthetic</h3>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                            <div>
+                                <label class="block text-xs font-bold text-[#7A5262] mb-1">Aesthetic Style Tag</label>
+                                <input type="text" id="inp-aesthetic" oninput="updateField('aesthetic', this.value)" placeholder="e.g. Sweet Lolita / Starlight Idol" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm font-semibold focus:outline-none focus:border-sakura-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-[#7A5262] mb-1">Character Color Palette (5 Swatches)</label>
+                                <div id="edit-palette-inputs" class="flex items-center gap-2.5">
+                                    <!-- Color pickers injected by JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-sakura-600 mb-1">✨ Signature Outfit</label>
+                                <textarea id="inp-outfitSignature" rows="4" oninput="updateField('outfitSignature', this.value)" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm focus:outline-none focus:border-sakura-400"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-[#7A5262] mb-1">☕ Casual / Everyday Wear</label>
+                                <textarea id="inp-outfitCasual" rows="4" oninput="updateField('outfitCasual', this.value)" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm focus:outline-none focus:border-sakura-400"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-[#7A5262] mb-1">👑 Formal / Battle / Stage Outfit</label>
+                                <textarea id="inp-outfitFormal" rows="4" oninput="updateField('outfitFormal', this.value)" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm focus:outline-none focus:border-sakura-400"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Accessories List Builder -->
+                        <div class="bg-sakura-50/70 border border-sakura-200 rounded-2xl p-4 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs font-bold uppercase tracking-wider text-sakura-600">👜 Signature Items & Accessories</label>
+                                <button type="button" onclick="addAccessoryItem()" class="px-3 py-1.5 rounded-xl bg-sakura-500 text-white text-xs font-bold hover:bg-sakura-600 transition">+ Add Item</button>
+                            </div>
+                            <div id="edit-accessories-list" class="space-y-2.5">
+                                <!-- Dynamic item rows -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- EDIT TAB 4: HISTORY & LORE -->
+                    <div id="edit-tab-history" class="edit-tab-panel hidden bg-cream-50 border-2 border-sakura-200 rounded-3xl p-5 sm:p-7 shadow-cute space-y-6">
+                        <h3 class="font-display font-bold text-xl text-sakura-700 border-b border-sakura-100 pb-3">📜 History, Lore & Timeline</h3>
+
+                        <div>
+                            <label class="block text-xs font-bold text-[#7A5262] mb-1">Hometown / Realm of Origin</label>
+                            <input type="text" id="inp-origin" oninput="updateField('origin', this.value)" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm font-semibold focus:outline-none focus:border-sakura-400">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-[#7A5262] mb-1">Biography & Backstory Summary</label>
+                            <textarea id="inp-backstory" rows="5" oninput="updateField('backstory', this.value)" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm focus:outline-none focus:border-sakura-400"></textarea>
+                        </div>
+
+                        <!-- Timeline Milestones Builder -->
+                        <div class="bg-sakura-50/70 border border-sakura-200 rounded-2xl p-4 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs font-bold uppercase tracking-wider text-sakura-600">⏳ Timeline Events & Turning Points</label>
+                                <button type="button" onclick="addTimelineEvent()" class="px-3 py-1.5 rounded-xl bg-sakura-500 text-white text-xs font-bold hover:bg-sakura-600 transition">+ Add Milestone</button>
+                            </div>
+                            <div id="edit-timeline-list" class="space-y-2.5">
+                                <!-- Dynamic timeline inputs -->
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-sakura-600 mb-1">🤫 Hidden Secret</label>
+                                <textarea id="inp-secret" rows="3" oninput="updateField('secret', this.value)" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm focus:outline-none focus:border-sakura-400"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-[#7A5262] mb-1">🎯 Current Goal / Ambition</label>
+                                <textarea id="inp-goal" rows="3" oninput="updateField('goal', this.value)" class="w-full px-3.5 py-2.5 rounded-2xl bg-white border border-sakura-200 text-sm focus:outline-none focus:border-sakura-400"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- EDIT TAB 5: RELATIONSHIPS -->
+                    <div id="edit-tab-relationships" class="edit-tab-panel hidden bg-cream-50 border-2 border-sakura-200 rounded-3xl p-5 sm:p-7 shadow-cute space-y-6">
+                        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-sakura-100 pb-3">
+                            <h3 class="font-display font-bold text-xl text-sakura-700">💌 Relationships & Bonds</h3>
+                            <button type="button" onclick="addRelationship()" class="px-4 py-2 rounded-2xl bg-sakura-500 hover:bg-sakura-600 text-white font-bold text-xs shadow-xs transition">
+                                + Add Relationship
+                            </button>
+                        </div>
+
+                        <p class="text-xs text-[#7A5262]">Link to another character already in your archive OR type a custom name, choose their dynamic badge, and rate their bond level!</p>
+
+                        <div id="edit-relationships-list" class="space-y-4">
+                            <!-- Relationship cards injected by JS -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        /* =========================================================================
+           1. DATA MODELS & SAMPLE CHARACTERS
+           ========================================================================= */
+        const STORAGE_KEY = 'character_archive_data_v2';
+
+        const CUTE_EMOJIS = [
+            '🧙‍♀️', '🧚‍♀️', '🎀', '🍓', '🌸', '🐱', '🐰', '🧸',
+            '👑', '✨', '🌙', '🔮', '🍰', '💌', '🦊', '🦢',
+            '🩰', '🎵', '🗡️', '🛡️', '🌿', '🦋', '🧁', '💎'
+        ];
+
+        const RELATIONSHIP_TYPES = [
+            { label: 'Best Friend', emoji: '👯‍♀️', color: 'bg-pink-100 text-pink-700 border-pink-200' },
+            { label: 'Secret Crush', emoji: '💘', color: 'bg-rose-100 text-rose-700 border-rose-200' },
+            { label: 'Romantic Partner', emoji: '💍', color: 'bg-red-100 text-red-700 border-red-200' },
+            { label: 'Sweet Rival', emoji: '⚡', color: 'bg-amber-100 text-amber-700 border-amber-200' },
+            { label: 'Found Family', emoji: '🏡', color: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
+            { label: 'Mentor / Idol', emoji: '🌟', color: 'bg-purple-100 text-purple-700 border-purple-200' },
+            { label: 'Complicated', emoji: '🥀', color: 'bg-slate-100 text-slate-700 border-slate-200' }
+        ];
+
+        const SPARK_PROMPTS = {
+            quirks: [
+                "Collects pressed sakura petals inside antique recipe books.",
+                "Hums lullabies whenever mixing volatile potions.",
+                "Always carries three different flavors of ribbon-wrapped hard candy.",
+                "Talks to stray cats as if they are high-ranking royal informants.",
+                "Folds tiny paper cranes out of old train tickets when nervous.",
+                "Refuses to step on cracks in cobblestone streets for good luck."
+            ],
+            wardrobes: [
+                "A strawberry-milk beret pinned with a tiny silver astrolabe.",
+                "Ruffled lace wrist cuffs hiding miniature enchanted daggers.",
+                "Platform Mary Janes with translucent heels filled with dried flowers.",
+                "An oversized cardigan embroidered with constellations that glow at night.",
+                "A heart-shaped locket that clicks open only under moonlight."
+            ],
+            lores: [
+                "Accidentally traded their reflection to a polite mirror spirit at age eight.",
+                "Secretly the runaway heir to a floating sky-bakery dynasty.",
+                "Found a star fragment in a teacup that granted them minor time magic.",
+                "Swore an oath to return a lost library book overdue by 300 years.",
+                "Once won a duel against a demon lord using only a parasol and etiquette."
+            ]
+        };
+
+        const SAMPLE_CHARACTERS = [
+            {
+                id: 'char_amelie_01',
+                name: 'Amélie Rosier',
+                nickname: 'The Sugarplum Alchemist',
+                age: '19 (Born April 14)',
+                pronouns: 'She / Her',
+                species: 'Patisserie Witch',
+                archetype: 'Chaotic Sweet Healer',
+                avatarEmoji: '🧁',
+                avatarUrl: '',
+                quote: 'A pinch of starlight and two spoons of strawberry sugar can mend almost any broken heart!',
+                stats: {
+                    Charm: 5,
+                    Wit: 4,
+                    Courage: 3,
+                    Magic: 5,
+                    Chaos: 4
+                },
+                mbti: 'ENFP-T',
+                enneagram: 'Type 2w3',
+                voice: 'Soft, melodic, with an excited lilt',
+                traits: ['Optimistic', 'Clumsy', 'Generous', 'Daydreamer', 'Inventive'],
+                likes: [
+                    'Freshly baked raspberry macarons',
+                    'Rainy afternoons in the greenhouse',
+                    'Ribbons, lace, and vintage teacups',
+                    'Stray calico cats'
+                ],
+                dislikes: [
+                    'Bitter black coffee',
+                    'Strict academy curfews',
+                    'Burnt caramel',
+                    'Rude aristocrats'
+                ],
+                strengths: 'Unmatched potion intuition, fiercely loyal to friends, able to diffuse tense situations with warmth and pastries.',
+                flaws: 'Easily distracted by shiny trinkets, struggles to say no, occasionally causes harmless pink glitter explosions.',
+                quirks: 'Taps her wooden whisk twice on the counter before casting any spell; leaves faint sugar trails wherever she walks.',
+                aesthetic: 'Mori Coquette',
+                palette: ['#FFD1E1', '#FF7AA8', '#FFF8F4', '#E8B4B8', '#8C5268'],
+                outfitSignature: 'A blush-pink tiered pinafore dress over a cream puff-sleeve blouse, paired with striped knee-high socks and a frilly bonnet.',
+                outfitCasual: 'Oversized knitted strawberry cardigan, pleated corduroy skirt, and comfy brown Mary Janes.',
+                outfitFormal: 'Rose-gold silk ballgown adorned with enchanted sugar-crystal roses that shimmer when she dances.',
+                accessories: [
+                    { icon: '🥄', name: 'Whisk of Starlight', desc: 'A rose-quartz stirring wand that doubles as a baking whisk.' },
+                    { icon: '📖', name: 'Grimoire of Sweets', desc: 'A velvet recipe book whose pages rewrite themselves at midnight.' },
+                    { icon: '🐱', name: 'Mochi (Familiar)', desc: 'A chubby white cat wearing a pink bell collar.' }
+                ],
+                origin: 'Velvet Vale, Pastry District',
+                backstory: 'Raised in a bustling greenhouse bakery on the edge of Velvet Vale, Amélie discovered her magical affinity when her tears accidentally turned a batch of rosewater tarts into healing elixirs. Rather than attending the rigid Royal Arcanum, she opened a traveling tea-and-remedy cart.',
+                timeline: [
+                    { year: 'Age 8', title: 'First Enchanted Tart', desc: 'Cured her grandfather’s winter cold with a glowing peach galette.' },
+                    { year: 'Age 15', title: 'Met Mochi', desc: 'Rescued a stray spirit-cat stuck inside a giant copper mixing bowl.' },
+                    { year: 'Age 19', title: 'The Ribbon Caravan', desc: 'Launched her pastel apothecary cart in the capital plaza.' }
+                ],
+                secret: 'She accidentally borrowed a rare phoenix feather from the Royal Conservatory to bake a birthday soufflé.',
+                goal: 'To publish the first illustrated encyclopedia of edible magic and open a permanent sky-garden café.',
+                relationships: [
+                    {
+                        id: 'rel_1',
+                        linkedCharId: 'char_celeste_02',
+                        customName: 'Céleste Vane',
+                        type: 'Best Friend',
+                        bond: 5,
+                        note: 'Céleste always investigates strange magical mishaps near Amélie’s bakery—and stays for free cream puffs.'
+                    },
+                    {
+                        id: 'rel_2',
+                        linkedCharId: '',
+                        customName: 'Lord Julian Ashcroft',
+                        type: 'Sweet Rival',
+                        bond: 4,
+                        note: 'A serious royal alchemist who claims her baking isn’t "real science," yet buys her strawberry tarts every Tuesday.'
+                    }
+                ]
+            },
+            {
+                id: 'char_celeste_02',
+                name: 'Céleste Vane',
+                nickname: 'Starlight Detective',
+                age: '21 (Born Nov 2)',
+                pronouns: 'She / They',
+                species: 'Half-Fae Sleuth',
+                archetype: 'Velvet Detective',
+                avatarEmoji: '🔮',
+                avatarUrl: '',
+                quote: 'Every mystery leaves a trail of stardust—you just need the right lens to see it.',
+                stats: {
+                    Charm: 4,
+                    Wit: 5,
+                    Courage: 5,
+                    Magic: 3,
+                    Chaos: 2
+                },
+                mbti: 'INTJ-A',
+                enneagram: 'Type 5w4',
+                voice: 'Calm, velvety, dry humor',
+                traits: ['Observant', 'Poised', 'Secretly Soft', 'Witty', 'Protective'],
+                likes: [
+                    'Midnight rooftop stargazing',
+                    'Amélie’s raspberry macarons',
+                    'Fountain pens & wax seals',
+                    'Jazz records'
+                ],
+                dislikes: [
+                    'Unfinished puzzles',
+                    'Loud crowds',
+                    'Losing their magnifying monocle',
+                    'Cold tea'
+                ],
+                strengths: 'Photographic memory, unmatched deductive reasoning, sees through fae illusions effortlessly.',
+                flaws: 'Overworks themselves during tough cases, struggles to express vulnerability, chronically nocturnal.',
+                quirks: 'Spins a silver pocket watch between their knuckles while thinking; keeps meticulous color-coded notebooks.',
+                aesthetic: 'Starlight Academia',
+                palette: ['#FFE8F0', '#D89A9E', '#5C3A47', '#F7D6E0', '#B76E79'],
+                outfitSignature: 'A tailored dusty-rose trench cape over a ruffled Victorian vest, high-waisted trousers, and ribbon-laced ankle boots.',
+                outfitCasual: 'Silk pajama-style blouse, soft cardigan, and round rose-tinted reading glasses.',
+                outfitFormal: 'Midnight-plum velvet suit embroidered with silver constellations and a satin cravat.',
+                accessories: [
+                    { icon: ' monocle', name: 'Astral Monocle', desc: 'Reveals invisible ink and lingering magical footprints.' },
+                    { icon: '🕰️', name: 'Chrono Locket', desc: 'A rose-gold pocket watch stopped at 11:59 PM.' }
+                ],
+                origin: 'Lunaria Spire',
+                backstory: 'Born between the human clockwork city and the twilight fae court, Céleste opened the "Pink Moon Detective Agency" to solve supernatural oddities that the city watch ignores.',
+                timeline: [
+                    { year: 'Age 12', title: 'The Clocktower Case', desc: 'Solved the disappearance of the town’s chiming bells in a single night.' },
+                    { year: 'Age 18', title: 'Pink Moon Agency', desc: 'Founded their own cozy detective office above a flower shop.' }
+                ],
+                secret: 'Despite their cool detective persona, they sleep with a giant pastel bear plushie when thunder rolls.',
+                goal: 'To uncover the truth behind the vanishing of the Seventh Starlight Train.',
+                relationships: [
+                    {
+                        id: 'rel_3',
+                        linkedCharId: 'char_amelie_01',
+                        customName: 'Amélie Rosier',
+                        type: 'Best Friend',
+                        bond: 5,
+                        note: 'Amélie is the only person who remembers to remind Céleste to eat lunch during stakeouts.'
+                    }
+                ]
+            }
+        ];
+
+        /* =========================================================================
+           2. APPLICATION STATE
+           ========================================================================= */
+        let state = {
+            characters: [],
+            activeId: null,
+            viewMode: 'sheet', // 'sheet' | 'edit'
+            editTab: 'identity', // 'identity' | 'personality' | 'wardrobe' | 'history' | 'relationships'
+            sheetFilter: 'all'
+        };
+
+        let currentSpark = {
+            quirk: SPARK_PROMPTS.quirks[0],
+            wardrobe: SPARK_PROMPTS.wardrobes[0],
+            lore: SPARK_PROMPTS.lores[0]
+        };
+
+        /* =========================================================================
+           3. INITIALIZATION & STORAGE
+           ========================================================================= */
+        function initApp() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        state.characters = parsed;
+                        state.activeId = parsed[0].id;
+                    }
+                } catch (e) {
+                    console.error('Failed to parse saved characters', e);
+                }
+            }
+
+            // First-time visit: load sample characters automatically
+            if (state.characters.length === 0 && !localStorage.getItem(STORAGE_KEY + '_initialized')) {
+                state.characters = JSON.parse(JSON.stringify(SAMPLE_CHARACTERS));
+                state.activeId = state.characters[0].id;
+                localStorage.setItem(STORAGE_KEY + '_initialized', 'true');
+                saveToStorage();
+            }
+
+            renderEmojiPicker();
+            renderAll();
+            lucide.createIcons();
+        }
+
+        function saveToStorage() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state.characters));
+        }
+
+        function getActiveCharacter() {
+            return state.characters.find(c => c.id === state.activeId) || null;
+        }
+
+        /* =========================================================================
+           4. CUSTOM TOAST & CONFIRMATION DIALOGS (NO ALERT/CONFIRM)
+           ========================================================================= */
+        function showToast(message, icon = '🌸') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'pointer-events-auto bg-cream-50 border-2 border-sakura-300 text-[#4A2836] px-4 py-3 rounded-2xl shadow-cute flex items-center gap-2.5 text-sm font-bold transform transition-all duration-300 translate-y-2 opacity-0';
+            toast.innerHTML = `<span class="text-lg">${icon}</span><span>${escapeHTML(message)}</span>`;
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 2800);
+        }
+
+        function showConfirm(title, message, onConfirm) {
+            const modal = document.getElementById('confirm-modal');
+            document.getElementById('confirm-title').textContent = title;
+            document.getElementById('confirm-message').textContent = message;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            const okBtn = document.getElementById('confirm-ok-btn');
+            const cancelBtn = document.getElementById('confirm-cancel-btn');
+
+            const cleanup = () => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                okBtn.onclick = null;
+                cancelBtn.onclick = null;
+            };
+
+            okBtn.onclick = () => {
+                cleanup();
+                onConfirm();
+            };
+            cancelBtn.onclick = cleanup;
+        }
+
+        /* =========================================================================
+           5. CHARACTER CRUD OPERATIONS
+           ========================================================================= */
+        function createNewCharacter() {
+            const newId = 'char_' + Date.now();
+            const newChar = {
+                id: newId,
+                name: 'New Character',
+                nickname: 'Dreamer of Pastel Skies',
+                age: '18',
+                pronouns: 'They / Them',
+                species: 'Human',
+                archetype: 'Sweet Adventurer',
+                avatarEmoji: '🌸',
+                avatarUrl: '',
+                quote: 'Every story starts with a single spark of magic!',
+                stats: {
+                    Charm: 3,
+                    Wit: 3,
+                    Courage: 3,
+                    Magic: 3,
+                    Chaos: 3
+                },
+                mbti: 'INFP',
+                enneagram: 'Type 9',
+                voice: 'Warm & gentle',
+                traits: ['Kind', 'Curious', 'Creative'],
+                likes: ['Strawberry tea', 'Stargazing'],
+                dislikes: ['Rainy Mondays'],
+                strengths: 'Empathetic listener and creative problem solver.',
+                flaws: 'Sometimes overthinks small details.',
+                quirks: 'Doodles tiny stars in the margins of every notebook.',
+                aesthetic: 'Pastel Cottagecore',
+                palette: ['#FFD1E1', '#FF7AA8', '#FFF8F4', '#E8B4B8', '#8C5268'],
+                outfitSignature: 'A soft pink blouse with ribbon ties, pleated skirt, and comfortable boots.',
+                outfitCasual: 'Cozy knit sweater and high-waisted trousers.',
+                outfitFormal: 'Flowing chiffon dress with pearl accessories.',
+                accessories: [
+                    { icon: '🎀', name: 'Lucky Ribbon', desc: 'A satin hair ribbon gifted by a childhood friend.' }
+                ],
+                origin: 'Blossom Hollow',
+                backstory: 'Write your character’s origin story, childhood memories, and how they arrived at their current adventure...',
+                timeline: [
+                    { year: 'Chapter 1', title: 'The Beginning', desc: 'Left home with a suitcase full of dreams.' }
+                ],
+                secret: 'Keeps a hidden diary under a loose floorboard.',
+                goal: 'To explore the world and build lasting friendships.',
+                relationships: []
+            };
+
+            state.characters.unshift(newChar);
+            state.activeId = newId;
+            state.viewMode = 'edit';
+            state.editTab = 'identity';
+            saveToStorage();
+            renderAll();
+            closeMobileSidebarIfOpen();
+            showToast('Created a brand new character!', '✨');
+        }
+
+        function selectCharacter(id) {
+            state.activeId = id;
+            renderAll();
+            closeMobileSidebarIfOpen();
+        }
+
+        function duplicateCurrentCharacter() {
+            const current = getActiveCharacter();
+            if (!current) return;
+            const copy = JSON.parse(JSON.stringify(current));
+            copy.id = 'char_' + Date.now();
+            copy.name = current.name + ' (Copy)';
+            state.characters.unshift(copy);
+            state.activeId = copy.id;
+            saveToStorage();
+            renderAll();
+            showToast('Character duplicated!', '📋');
+        }
+
+        function deleteCurrentCharacter() {
+            const current = getActiveCharacter();
+            if (!current) return;
+
+            showConfirm(
+                `Delete ${current.name}?`,
+                'This character dossier will be permanently removed from your archive.',
+                () => {
+                    state.characters = state.characters.filter(c => c.id !== current.id);
+                    state.activeId = state.characters.length > 0 ? state.characters[0].id : null;
+                    saveToStorage();
+                    renderAll();
+                    showToast('Character removed from archive.', '🗑️');
+                }
+            );
+        }
+
+        function loadSampleCharacters(notify = false) {
+            const existingIds = new Set(state.characters.map(c => c.id));
+            let added = 0;
+            SAMPLE_CHARACTERS.forEach(sample => {
+                const clone = JSON.parse(JSON.stringify(sample));
+                if (existingIds.has(clone.id)) {
+                    clone.id = clone.id + '_' + Date.now();
+                }
+                state.characters.push(clone);
+                added++;
+            });
+            if (!state.activeId && state.characters.length > 0) {
+                state.activeId = state.characters[0].id;
+            }
+            saveToStorage();
+            renderAll();
+            if (notify) showToast(`Added ${added} sample characters!`, '🌸');
+        }
+
+        /* =========================================================================
+           6. REAL-TIME FIELD UPDATES (EDIT MODE)
+           ========================================================================= */
+        function updateField(field, value) {
+            const char = getActiveCharacter();
+            if (!char) return;
+            char[field] = value;
+            saveToStorage();
+            renderRoster();
+            if (field === 'avatarUrl') {
+                renderAvatarPreview(char);
+            }
+        }
+
+        function updateStat(statKey, value) {
+            const char = getActiveCharacter();
+            if (!char) return;
+            char.stats[statKey] = parseInt(value, 10);
+            saveToStorage();
+            renderEditStats(char);
+        }
+
+        function updateLineArray(field, rawText) {
+            const char = getActiveCharacter();
+            if (!char) return;
+            char[field] = rawText.split('\n').map(s => s.trim()).filter(Boolean);
+            saveToStorage();
+        }
+
+        function addArrayTag(field, inputId) {
+            const char = getActiveCharacter();
+            const input = document.getElementById(inputId);
+            if (!char || !input) return;
+            const val = input.value.trim();
+            if (!val) return;
+            if (!Array.isArray(char[field])) char[field] = [];
+            char[field].push(val);
+            input.value = '';
+            saveToStorage();
+            renderEditTraits(char);
+        }
+
+        function removeArrayTag(field, index) {
+            const char = getActiveCharacter();
+            if (!char || !Array.isArray(char[field])) return;
+            char[field].splice(index, 1);
+            saveToStorage();
+            renderEditTraits(char);
+        }
+
+        function updatePaletteColor(index, hex) {
+            const char = getActiveCharacter();
+            if (!char) return;
+            char.palette[index] = hex;
+            saveToStorage();
+        }
+
+        function addAccessoryItem() {
+            const char = getActiveCharacter();
+            if (!char) return;
+            char.accessories.push({ icon: '✨', name: 'New Item', desc: 'Description of this item...' });
+            saveToStorage();
+            renderEditAccessories(char);
+        }
+
+        function updateAccessory(index, key, val) {
+            const char = getActiveCharacter();
+            if (!char || !char.accessories[index]) return;
+            char.accessories[index][key] = val;
+            saveToStorage();
+        }
+
+        function removeAccessory(index) {
+            const char = getActiveCharacter();
+            if (!char) return;
+            char.accessories.splice(index, 1);
+            saveToStorage();
+            renderEditAccessories(char);
+        }
+
+        function addTimelineEvent() {
+            const char = getActiveCharacter();
+            if (!char) return;
+            char.timeline.push({ year: 'New Era', title: 'Turning Point', desc: 'What happened during this moment?' });
+            saveToStorage();
+            renderEditTimeline(char);
+        }
+
+        function updateTimeline(index, key, val) {
+            const char = getActiveCharacter();
+            if (!char || !char.timeline[index]) return;
+            char.timeline[index][key] = val;
+            saveToStorage();
+        }
+
+        function removeTimeline(index) {
+            const char = getActiveCharacter();
+            if (!char) return;
+            char.timeline.splice(index, 1);
+            saveToStorage();
+            renderEditTimeline(char);
+        }
+
+        function addRelationship() {
+            const char = getActiveCharacter();
+            if (!char) return;
+            char.relationships.push({
+                id: 'rel_' + Date.now(),
+                linkedCharId: '',
+                customName: 'New Acquaintance',
+                type: 'Best Friend',
+                bond: 4,
+                note: 'How did they meet, and what is their dynamic?'
+            });
+            saveToStorage();
+            renderEditRelationships(char);
+        }
+
+        function updateRelationship(index, key, val) {
+            const char = getActiveCharacter();
+            if (!char || !char.relationships[index]) return;
+            char.relationships[index][key] = key === 'bond' ? parseInt(val, 10) : val;
+
+            // If linking an archive character, auto-sync name if customName was default
+            if (key === 'linkedCharId' && val) {
+                const target = state.characters.find(c => c.id === val);
+                if (target) {
+                    char.relationships[index].customName = target.name;
+                }
+            }
+            saveToStorage();
+            renderEditRelationships(char);
+        }
+
+        function removeRelationship(index) {
+            const char = getActiveCharacter();
+            if (!char) return;
+            char.relationships.splice(index, 1);
+            saveToStorage();
+            renderEditRelationships(char);
+        }
+
+        /* =========================================================================
+           7. VIEW & TAB NAVIGATION
+           ========================================================================= */
+        function setViewMode(mode) {
+            state.viewMode = mode;
+            const sheetView = document.getElementById('view-sheet');
+            const editView = document.getElementById('view-edit');
+            const btnSheet = document.getElementById('btn-mode-sheet');
+            const btnEdit = document.getElementById('btn-mode-edit');
+
+            if (mode === 'sheet') {
+                sheetView.classList.remove('hidden');
+                editView.classList.add('hidden');
+                btnSheet.className = 'flex items-center gap-1.5 px-4 py-2 rounded-xl font-display font-bold text-xs sm:text-sm transition bg-white text-sakura-600 shadow-xs';
+                btnEdit.className = 'flex items-center gap-1.5 px-4 py-2 rounded-xl font-display font-bold text-xs sm:text-sm transition text-[#7A5262] hover:text-sakura-600';
+                renderCharacterSheet();
+            } else {
+                sheetView.classList.add('hidden');
+                editView.classList.remove('hidden');
+                btnEdit.className = 'flex items-center gap-1.5 px-4 py-2 rounded-xl font-display font-bold text-xs sm:text-sm transition bg-white text-sakura-600 shadow-xs';
+                btnSheet.className = 'flex items-center gap-1.5 px-4 py-2 rounded-xl font-display font-bold text-xs sm:text-sm transition text-[#7A5262] hover:text-sakura-600';
+                populateEditForm();
+            }
+            lucide.createIcons();
+        }
+
+        function setEditTab(tabName) {
+            state.editTab = tabName;
+            document.querySelectorAll('.edit-tab-panel').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`edit-tab-${tabName}`).classList.remove('hidden');
+
+            document.querySelectorAll('.edit-tab-btn').forEach(btn => {
+                if (btn.dataset.editTab === tabName) {
+                    btn.className = 'edit-tab-btn flex-1 min-w-[110px] py-2.5 px-3 rounded-2xl font-display font-bold text-xs sm:text-sm bg-sakura-500 text-white shadow-xs transition';
+                } else {
+                    btn.className = 'edit-tab-btn flex-1 min-w-[110px] py-2.5 px-3 rounded-2xl font-display font-bold text-xs sm:text-sm text-[#7A5262] hover:bg-sakura-100 transition';
+                }
+            });
+        }
+
+        function filterSheetSection(sectionKey) {
+            state.sheetFilter = sectionKey;
+            document.querySelectorAll('.sheet-tab-btn').forEach(btn => {
+                if (btn.dataset.sheetTab === sectionKey) {
+                    btn.className = 'sheet-tab-btn px-4 py-2 rounded-2xl text-xs font-bold bg-sakura-500 text-white shadow-xs transition';
+                } else {
+                    btn.className = 'sheet-tab-btn px-4 py-2 rounded-2xl text-xs font-bold bg-cream-50 text-[#7A5262] border border-sakura-200 hover:bg-sakura-100 transition';
+                }
+            });
+
+            document.querySelectorAll('.sheet-section').forEach(sec => {
+                if (sectionKey === 'all' || sec.id === `sheet-sec-${sectionKey}`) {
+                    sec.classList.remove('hidden');
+                } else {
+                    sec.classList.add('hidden');
+                }
+            });
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('character-sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            const isClosed = sidebar.classList.contains('-translate-x-full');
+            if (isClosed) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        }
+
+        function closeMobileSidebarIfOpen() {
+            const sidebar = document.getElementById('character-sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            if (!sidebar.classList.contains('-translate-x-full') && window.innerWidth < 1024) {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        }
+
+        /* =========================================================================
+           8. RENDERING FUNCTIONS
+           ========================================================================= */
+        function renderAll() {
+            renderRoster();
+            const char = getActiveCharacter();
+            const emptyState = document.getElementById('empty-state');
+            const workspace = document.getElementById('character-workspace');
+
+            if (!char) {
+                emptyState.classList.remove('hidden');
+                workspace.classList.add('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            workspace.classList.remove('hidden');
+
+            if (state.viewMode === 'sheet') {
+                renderCharacterSheet();
+            } else {
+                populateEditForm();
+            }
+            lucide.createIcons();
+        }
+
+        function renderRoster() {
+            const listEl = document.getElementById('roster-list');
+            const countEl = document.getElementById('roster-count');
+            const query = (document.getElementById('roster-search')?.value || '').toLowerCase();
+
+            const filtered = state.characters.filter(c => {
+                return c.name.toLowerCase().includes(query) ||
+                       (c.species || '').toLowerCase().includes(query) ||
+                       (c.archetype || '').toLowerCase().includes(query) ||
+                       (c.nickname || '').toLowerCase().includes(query);
+            });
+
+            countEl.textContent = state.characters.length;
+
+            if (filtered.length === 0) {
+                listEl.innerHTML = `<div class="text-center py-8 text-xs text-[#9E7887] font-semibold">No matching characters found 🌸</div>`;
+                return;
+            }
+
+            listEl.innerHTML = filtered.map(c => {
+                const isActive = c.id === state.activeId;
+                const avatarHtml = c.avatarUrl
+                    ? `<img src="${escapeHTML(c.avatarUrl)}" alt="${escapeHTML(c.name)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" class="w-full h-full object-cover"><span style="display:none" class="w-full h-full items-center justify-center text-xl">${c.avatarEmoji || '🌸'}</span>`
+                    : `<span class="text-xl">${c.avatarEmoji || '🌸'}</span>`;
+
+                return `
+                    <button onclick="selectCharacter('${c.id}')" class="w-full text-left p-2.5 rounded-2xl border-2 transition flex items-center gap-3 ${isActive ? 'bg-sakura-100/90 border-sakura-400 shadow-xs' : 'bg-white/70 border-transparent hover:border-sakura-200 hover:bg-sakura-50'}">
+                        <div class="w-11 h-11 rounded-2xl bg-cream-50 border border-sakura-200 flex items-center justify-center shrink-0 overflow-hidden">
+                            ${avatarHtml}
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="font-display font-bold text-sm text-[#4A2836] truncate">${escapeHTML(c.name)}</div>
+                            <div class="text-[11px] font-semibold text-sakura-600 truncate">${escapeHTML(c.species || c.archetype || 'Original Character')}</div>
+                        </div>
+                        ${isActive ? '<span class="text-sakura-500 text-xs">✿</span>' : ''}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function renderAvatarHTML(char, textSizeClass = 'text-5xl') {
+            if (char.avatarUrl && char.avatarUrl.trim() !== '') {
+                return `
+                    <img src="${escapeHTML(char.avatarUrl)}" alt="${escapeHTML(char.name)}"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                         class="w-full h-full object-cover rounded-2xl">
+                    <div style="display:none" class="w-full h-full items-center justify-center ${textSizeClass}">${char.avatarEmoji || '🌸'}</div>
+                `;
+            }
+            return `<span class="${textSizeClass}">${char.avatarEmoji || '🌸'}</span>`;
+        }
+
+        function renderCharacterSheet() {
+            const c = getActiveCharacter();
+            if (!c) return;
+
+            const idx = state.characters.findIndex(item => item.id === c.id) + 1;
+            document.getElementById('sheet-file-id').textContent = String(idx).padStart(3, '0');
+
+            // Banner gradient using character's top 2 palette colors
+            const p0 = (c.palette && c.palette[0]) || '#FFD1E1';
+            const p1 = (c.palette && c.palette[1]) || '#FF7AA8';
+            document.getElementById('sheet-banner').style.background = `linear-gradient(120deg, ${p0}, ${p1})`;
+
+            // Avatar & Header
+            document.getElementById('sheet-avatar-frame').innerHTML = renderAvatarHTML(c, 'text-5xl sm:text-6xl');
+            document.getElementById('sheet-name').textContent = c.name || 'Unnamed Character';
+            document.getElementById('sheet-nickname').textContent = c.nickname ? `"${c.nickname}"` : '';
+            document.getElementById('sheet-archetype-badge').textContent = c.archetype || 'Original Character';
+            document.getElementById('sheet-mbti-badge').textContent = c.mbti || 'MBTI ?';
+            document.getElementById('sheet-quote').textContent = c.quote || 'No tagline set yet.';
+
+            // Identity Specs
+            document.getElementById('sheet-age').textContent = c.age || '—';
+            document.getElementById('sheet-pronouns').textContent = c.pronouns || '—';
+            document.getElementById('sheet-species').textContent = c.species || '—';
+            document.getElementById('sheet-origin').textContent = c.origin || '—';
+            document.getElementById('sheet-aesthetic').textContent = c.aesthetic || '—';
+            document.getElementById('sheet-voice').textContent = c.voice || '—';
+
+            // Stats
+            const statsEl = document.getElementById('sheet-stats-list');
+            const statsObj = c.stats || { Charm: 3, Wit: 3, Courage: 3, Magic: 3, Chaos: 3 };
+            statsEl.innerHTML = Object.entries(statsObj).map(([label, val]) => {
+                const hearts = Array.from({ length: 5 }, (_, i) =>
+                    i < val
+                        ? '<span class="text-sakura-500 text-sm">♥</span>'
+                        : '<span class="text-sakura-200 text-sm">♥</span>'
+                ).join('');
+                return `
+                    <div class="flex items-center justify-between text-xs font-bold">
+                        <span class="text-[#6D4756]">${escapeHTML(label)}</span>
+                        <div class="flex items-center gap-2">
+                            <div class="tracking-widest">${hearts}</div>
+                            <span class="text-[11px] text-sakura-500 w-6 text-right">${val}/5</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Personality
+            document.getElementById('sheet-enneagram').textContent = c.enneagram || 'Enneagram';
+            const traitsEl = document.getElementById('sheet-traits');
+            traitsEl.innerHTML = (c.traits && c.traits.length > 0)
+                ? c.traits.map(t => `<span class="px-3 py-1 rounded-full text-xs font-bold bg-sakura-100 text-sakura-700 border border-sakura-200">✿ ${escapeHTML(t)}</span>`).join('')
+                : '<span class="text-xs text-[#9E7887]">No traits listed</span>';
+
+            document.getElementById('sheet-likes').innerHTML = (c.likes && c.likes.length > 0)
+                ? c.likes.map(l => `<li class="flex items-start gap-2"><span class="text-sakura-400">♥</span><span>${escapeHTML(l)}</span></li>`).join('')
+                : '<li class="text-xs text-[#9E7887]">None listed</li>';
+
+            document.getElementById('sheet-dislikes').innerHTML = (c.dislikes && c.dislikes.length > 0)
+                ? c.dislikes.map(d => `<li class="flex items-start gap-2"><span class="text-[#9E7887]">✕</span><span>${escapeHTML(d)}</span></li>`).join('')
+                : '<li class="text-xs text-[#9E7887]">None listed</li>';
+
+            document.getElementById('sheet-strengths').textContent = c.strengths || '—';
+            document.getElementById('sheet-flaws').textContent = c.flaws || '—';
+            document.getElementById('sheet-quirks').textContent = c.quirks || '—';
+
+            // Wardrobe & Palette
+            const paletteEl = document.getElementById('sheet-palette');
+            paletteEl.innerHTML = (c.palette || []).map(hex => `
+                <button onclick="copyColorHex('${hex}')" title="Click to copy ${hex}" class="group flex flex-col items-center">
+                    <span class="w-7 h-7 rounded-full border-2 border-white shadow-sm transition transform group-hover:scale-110" style="background-color: ${hex}"></span>
+                    <span class="text-[9px] font-bold text-[#8C6273] mt-0.5 uppercase">${hex}</span>
+                </button>
+            `).join('');
+
+            document.getElementById('sheet-outfit-signature').textContent = c.outfitSignature || '—';
+            document.getElementById('sheet-outfit-casual').textContent = c.outfitCasual || '—';
+            document.getElementById('sheet-outfit-formal').textContent = c.outfitFormal || '—';
+
+            const accEl = document.getElementById('sheet-accessories');
+            accEl.innerHTML = (c.accessories && c.accessories.length > 0)
+                ? c.accessories.map(item => `
+                    <div class="bg-white border border-sakura-200 rounded-2xl p-3 flex items-start gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-sakura-50 border border-sakura-200 flex items-center justify-center text-lg shrink-0">
+                            ${escapeHTML(item.icon || '🎀')}
+                        </div>
+                        <div class="min-w-0">
+                            <div class="font-display font-bold text-sm text-[#4A2836]">${escapeHTML(item.name)}</div>
+                            <p class="text-xs text-[#7A5262] leading-snug mt-0.5">${escapeHTML(item.desc)}</p>
+                        </div>
+                    </div>
+                `).join('')
+                : '<p class="text-xs text-[#9E7887]">No accessories added yet.</p>';
+
+            // History & Timeline
+            document.getElementById('sheet-origin-pill').textContent = `Origin: ${c.origin || 'Unknown'}`;
+            document.getElementById('sheet-backstory').textContent = c.backstory || 'No backstory written yet.';
+            document.getElementById('sheet-secret').textContent = c.secret || 'No secrets revealed.';
+            document.getElementById('sheet-goal').textContent = c.goal || 'No goal set.';
+
+            const timelineEl = document.getElementById('sheet-timeline');
+            timelineEl.innerHTML = (c.timeline && c.timeline.length > 0)
+                ? c.timeline.map(ev => `
+                    <div class="relative">
+                        <span class="w-3 h-3 rounded-full bg-sakura-400 border-2 border-white shadow-xs absolute -left-[27px] top-1.5"></span>
+                        <div class="bg-white border border-sakura-100 rounded-2xl p-3.5">
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <span class="px-2 py-0.5 rounded-lg bg-sakura-100 text-sakura-700 font-bold text-[11px]">${escapeHTML(ev.year)}</span>
+                                <span class="font-display font-bold text-sm text-[#4A2836]">${escapeHTML(ev.title)}</span>
+                            </div>
+                            <p class="text-xs text-[#6D4756] leading-relaxed">${escapeHTML(ev.desc)}</p>
+                        </div>
+                    </div>
+                `).join('')
+                : '<p class="text-xs text-[#9E7887]">No timeline milestones yet.</p>';
+
+            // Relationships
+            const rels = c.relationships || [];
+            document.getElementById('sheet-rel-count').textContent = `${rels.length} Connection${rels.length === 1 ? '' : 's'}`;
+            const relEl = document.getElementById('sheet-relationships');
+
+            if (rels.length === 0) {
+                relEl.innerHTML = `<div class="col-span-full text-center py-6 text-xs text-[#9E7887] bg-white/60 rounded-2xl border border-sakura-100">No relationships mapped yet. Switch to "Edit Details" to add bonds! 💌</div>`;
+            } else {
+                relEl.innerHTML = rels.map(rel => {
+                    const linkedChar = rel.linkedCharId ? state.characters.find(x => x.id === rel.linkedCharId) : null;
+                    const displayName = linkedChar ? linkedChar.name : (rel.customName || 'Unknown');
+                    const displayEmoji = linkedChar ? (linkedChar.avatarEmoji || '🌸') : '💌';
+                    const typeMeta = RELATIONSHIP_TYPES.find(t => t.label === rel.type) || RELATIONSHIP_TYPES[0];
+                    const bondHearts = '💖'.repeat(rel.bond || 3) + '🤍'.repeat(Math.max(0, 5 - (rel.bond || 3)));
+
+                    return `
+                        <div class="bg-white border border-sakura-200 rounded-2xl p-4 flex flex-col justify-between gap-3">
+                            <div>
+                                <div class="flex items-center justify-between gap-2 mb-2">
+                                    <div class="flex items-center gap-2.5 min-w-0">
+                                        <div class="w-10 h-10 rounded-2xl bg-sakura-50 border border-sakura-200 flex items-center justify-center text-xl shrink-0">
+                                            ${displayEmoji}
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="font-display font-bold text-base text-[#4A2836] truncate">${escapeHTML(displayName)}</div>
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${typeMeta.color}">
+                                                ${typeMeta.emoji} ${escapeHTML(rel.type)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    ${linkedChar ? `<button onclick="selectCharacter('${linkedChar.id}')" class="no-print px-2.5 py-1 rounded-xl bg-sakura-100 hover:bg-sakura-200 text-sakura-700 text-[11px] font-bold shrink-0 transition">View File →</button>` : ''}
+                                </div>
+                                <p class="text-xs text-[#6D4756] leading-relaxed bg-sakura-50/50 p-2.5 rounded-xl border border-sakura-100">${escapeHTML(rel.note || '')}</p>
+                            </div>
+                            <div class="flex items-center justify-between text-[11px] font-bold text-[#8C6273] pt-1">
+                                <span>Bond Affinity</span>
+                                <span class="tracking-tighter">${bondHearts}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        /* =========================================================================
+           9. POPULATE EDIT MODE FORMS
+           ========================================================================= */
+        function renderEmojiPicker() {
+            const grid = document.getElementById('emoji-picker-grid');
+            grid.innerHTML = CUTE_EMOJIS.map(em => `
+                <button type="button" onclick="selectAvatarEmoji('${em}')" class="w-8 h-8 rounded-xl bg-white hover:bg-sakura-200 border border-sakura-200 flex items-center justify-center text-base transition">
+                    ${em}
+                </button>
+            `).join('');
+        }
+
+        function selectAvatarEmoji(emoji) {
+            const char = getActiveCharacter();
+            if (!char) return;
+            char.avatarEmoji = emoji;
+            saveToStorage();
+            renderAvatarPreview(char);
+            renderRoster();
+        }
+
+        function renderAvatarPreview(char) {
+            const preview = document.getElementById('edit-avatar-preview');
+            preview.innerHTML = renderAvatarHTML(char, 'text-4xl');
+        }
+
+        function populateEditForm() {
+            const c = getActiveCharacter();
+            if (!c) return;
+
+            renderAvatarPreview(c);
+            document.getElementById('inp-avatarUrl').value = c.avatarUrl || '';
+            document.getElementById('inp-name').value = c.name || '';
+            document.getElementById('inp-nickname').value = c.nickname || '';
+            document.getElementById('inp-age').value = c.age || '';
+            document.getElementById('inp-pronouns').value = c.pronouns || '';
+            document.getElementById('inp-species').value = c.species || '';
+            document.getElementById('inp-archetype').value = c.archetype || '';
+            document.getElementById('inp-quote').value = c.quote || '';
+
+            renderEditStats(c);
+
+            // Personality
+            document.getElementById('inp-mbti').value = c.mbti || '';
+            document.getElementById('inp-enneagram').value = c.enneagram || '';
+            document.getElementById('inp-voice').value = c.voice || '';
+            renderEditTraits(c);
+            document.getElementById('inp-likes').value = (c.likes || []).join('\n');
+            document.getElementById('inp-dislikes').value = (c.dislikes || []).join('\n');
+            document.getElementById('inp-strengths').value = c.strengths || '';
+            document.getElementById('inp-flaws').value = c.flaws || '';
+            document.getElementById('inp-quirks').value = c.quirks || '';
+
+            // Wardrobe
+            document.getElementById('inp-aesthetic').value = c.aesthetic || '';
+            renderEditPalette(c);
+            document.getElementById('inp-outfitSignature').value = c.outfitSignature || '';
+            document.getElementById('inp-outfitCasual').value = c.outfitCasual || '';
+            document.getElementById('inp-outfitFormal').value = c.outfitFormal || '';
+            renderEditAccessories(c);
+
+            // History
+            document.getElementById('inp-origin').value = c.origin || '';
+            document.getElementById('inp-backstory').value = c.backstory || '';
+            renderEditTimeline(c);
+            document.getElementById('inp-secret').value = c.secret || '';
+            document.getElementById('inp-goal').value = c.goal || '';
+
+            // Relationships
+            renderEditRelationships(c);
+        }
+
+        function renderEditStats(char) {
+            const container = document.getElementById('edit-stats-container');
+            const stats = char.stats || { Charm: 3, Wit: 3, Courage: 3, Magic: 3, Chaos: 3 };
+            container.innerHTML = Object.entries(stats).map(([key, val]) => `
+                <div class="bg-white p-3 rounded-2xl border border-sakura-200">
+                    <div class="flex justify-between text-xs font-bold text-[#5C3A47] mb-1.5">
+                        <span>${escapeHTML(key)}</span>
+                        <span class="text-sakura-600">${val} / 5 ♥</span>
+                    </div>
+                    <input type="range" min="1" max="5" value="${val}" oninput="updateStat('${key}', this.value)" class="w-full accent-sakura-500 cursor-pointer">
+                </div>
+            `).join('');
+        }
+
+        function renderEditTraits(char) {
+            const container = document.getElementById('edit-traits-list');
+            container.innerHTML = (char.traits || []).map((trait, idx) => `
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sakura-100 text-sakura-700 border border-sakura-200 text-xs font-bold">
+                    ${escapeHTML(trait)}
+                    <button type="button" onclick="removeArrayTag('traits', ${idx})" class="hover:text-rose-600 font-extrabold">×</button>
+                </span>
+            `).join('');
+        }
+
+        function renderEditPalette(char) {
+            const container = document.getElementById('edit-palette-inputs');
+            const colors = char.palette || ['#FFD1E1', '#FF7AA8', '#FFF8F4', '#E8B4B8', '#8C5268'];
+            container.innerHTML = colors.map((hex, i) => `
+                <label class="flex flex-col items-center cursor-pointer">
+                    <input type="color" value="${hex}" oninput="updatePaletteColor(${i}, this.value)" class="w-10 h-10 rounded-xl border-2 border-sakura-200 cursor-pointer bg-transparent">
+                </label>
+            `).join('');
+        }
+
+        function renderEditAccessories(char) {
+            const container = document.getElementById('edit-accessories-list');
+            container.innerHTML = (char.accessories || []).map((item, idx) => `
+                <div class="bg-white p-3 rounded-2xl border border-sakura-200 flex flex-col sm:flex-row gap-2 items-start sm:items-center">
+                    <input type="text" value="${escapeHTML(item.icon || '🎀')}" oninput="updateAccessory(${idx}, 'icon', this.value)" class="w-12 text-center px-2 py-1.5 rounded-xl bg-sakura-50 border border-sakura-200 text-base" title="Emoji Icon">
+                    <input type="text" value="${escapeHTML(item.name)}" oninput="updateAccessory(${idx}, 'name', this.value)" placeholder="Item Name" class="w-full sm:w-44 px-3 py-1.5 rounded-xl bg-sakura-50 border border-sakura-200 text-xs font-bold">
+                    <input type="text" value="${escapeHTML(item.desc)}" oninput="updateAccessory(${idx}, 'desc', this.value)" placeholder="Item description..." class="flex-1 w-full px-3 py-1.5 rounded-xl bg-sakura-50 border border-sakura-200 text-xs">
+                    <button type="button" onclick="removeAccessory(${idx})" class="p-1.5 rounded-xl text-rose-500 hover:bg-rose-50 text-xs font-bold">Remove</button>
+                </div>
+            `).join('');
+        }
+
+        function renderEditTimeline(char) {
+            const container = document.getElementById('edit-timeline-list');
+            container.innerHTML = (char.timeline || []).map((ev, idx) => `
+                <div class="bg-white p-3 rounded-2xl border border-sakura-200 space-y-2">
+                    <div class="flex flex-wrap gap-2 items-center">
+                        <input type="text" value="${escapeHTML(ev.year)}" oninput="updateTimeline(${idx}, 'year', this.value)" placeholder="Age / Year" class="w-28 px-3 py-1.5 rounded-xl bg-sakura-50 border border-sakura-200 text-xs font-bold text-sakura-700">
+                        <input type="text" value="${escapeHTML(ev.title)}" oninput="updateTimeline(${idx}, 'title', this.value)" placeholder="Milestone Title" class="flex-1 px-3 py-1.5 rounded-xl bg-sakura-50 border border-sakura-200 text-xs font-bold">
+                        <button type="button" onclick="removeTimeline(${idx})" class="px-2.5 py-1 rounded-xl text-rose-500 hover:bg-rose-50 text-xs font-bold">Delete</button>
+                    </div>
+                    <input type="text" value="${escapeHTML(ev.desc)}" oninput="updateTimeline(${idx}, 'desc', this.value)" placeholder="What happened?" class="w-full px-3 py-1.5 rounded-xl bg-sakura-50 border border-sakura-200 text-xs">
+                </div>
+            `).join('');
+        }
+
+        function renderEditRelationships(char) {
+            const container = document.getElementById('edit-relationships-list');
+            const otherChars = state.characters.filter(c => c.id !== char.id);
+
+            if (!char.relationships || char.relationships.length === 0) {
+                container.innerHTML = `<div class="text-center py-6 text-xs text-[#9E7887] bg-sakura-50/50 rounded-2xl border border-sakura-200">Click "+ Add Relationship" above to connect characters! 💌</div>`;
+                return;
+            }
+
+            container.innerHTML = char.relationships.map((rel, idx) => {
+                const archiveOptions = otherChars.map(oc =>
+                    `<option value="${oc.id}" ${rel.linkedCharId === oc.id ? 'selected' : ''}>Link: ${escapeHTML(oc.name)}</option>`
+                ).join('');
+
+                const typeOptions = RELATIONSHIP_TYPES.map(rt =>
+                    `<option value="${rt.label}" ${rel.type === rt.label ? 'selected' : ''}>${rt.emoji} ${rt.label}</option>`
+                ).join('');
+
+                return `
+                    <div class="bg-sakura-50/70 border border-sakura-200 rounded-2xl p-4 space-y-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                            <div>
+                                <label class="block text-[11px] font-bold text-[#7A5262] mb-1">Link Archive OC (Optional)</label>
+                                <select onchange="updateRelationship(${idx}, 'linkedCharId', this.value)" class="w-full px-3 py-2 rounded-xl bg-white border border-sakura-200 text-xs font-semibold">
+                                    <option value="">-- Custom Character --</option>
+                                    ${archiveOptions}
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-[#7A5262] mb-1">Character Name</label>
+                                <input type="text" value="${escapeHTML(rel.customName || '')}" oninput="updateRelationship(${idx}, 'customName', this.value)" class="w-full px-3 py-2 rounded-xl bg-white border border-sakura-200 text-xs font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-[#7A5262] mb-1">Relationship Dynamic</label>
+                                <select onchange="updateRelationship(${idx}, 'type', this.value)" class="w-full px-3 py-2 rounded-xl bg-white border border-sakura-200 text-xs font-bold">
+                                    ${typeOptions}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+                            <div class="flex-1">
+                                <label class="block text-[11px] font-bold text-[#7A5262] mb-1">Dynamic Notes</label>
+                                <input type="text" value="${escapeHTML(rel.note || '')}" oninput="updateRelationship(${idx}, 'note', this.value)" placeholder="Describe their history or feelings..." class="w-full px-3 py-2 rounded-xl bg-white border border-sakura-200 text-xs">
+                            </div>
+                            <div class="w-full sm:w-40">
+                                <label class="block text-[11px] font-bold text-sakura-600 mb-1">Bond Level: ${rel.bond || 3}/5 💖</label>
+                                <input type="range" min="1" max="5" value="${rel.bond || 3}" oninput="updateRelationship(${idx}, 'bond', this.value)" class="w-full accent-sakura-500">
+                            </div>
+                            <button type="button" onclick="removeRelationship(${idx})" class="self-end px-3 py-2 rounded-xl bg-rose-100 text-rose-700 hover:bg-rose-200 text-xs font-bold transition">Remove</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        /* =========================================================================
+           10. CREATIVE SPARK GENERATOR & JSON IMPORT/EXPORT
+           ========================================================================= */
+        function openSparkModal() {
+            rollSparkPrompts();
+            const modal = document.getElementById('spark-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function rollSparkPrompts() {
+            const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+            currentSpark = {
+                quirk: pick(SPARK_PROMPTS.quirks),
+                wardrobe: pick(SPARK_PROMPTS.wardrobes),
+                lore: pick(SPARK_PROMPTS.lores)
+            };
+            document.getElementById('spark-quirk').textContent = currentSpark.quirk;
+            document.getElementById('spark-wardrobe').textContent = currentSpark.wardrobe;
+            document.getElementById('spark-lore').textContent = currentSpark.lore;
+        }
+
+        function applySparkToCurrent() {
+            const char = getActiveCharacter();
+            if (!char) {
+                showToast('Create a character first!', '🌸');
+                return;
+            }
+            char.quirks = char.quirks ? `${char.quirks} ${currentSpark.quirk}` : currentSpark.quirk;
+            char.accessories.push({
+                icon: '✨',
+                name: 'Inspired Keepsake',
+                desc: currentSpark.wardrobe
+            });
+            char.timeline.push({
+                year: 'Spark Hook',
+                title: 'Mysterious Twist',
+                desc: currentSpark.lore
+            });
+            saveToStorage();
+            renderAll();
+            closeModal('spark-modal');
+            showToast(`Added spark ideas to ${char.name}!`, '✨');
+        }
+
+        function copyColorHex(hex) {
+            const temp = document.createElement('textarea');
+            temp.value = hex;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast(`Copied color ${hex}!`, '🎨');
+        }
+
+        function exportJSON() {
+            const dataStr = JSON.stringify(state.characters, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `character-archive-backup-${new Date().toISOString().slice(0, 10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Exported Archive JSON!', '💾');
+        }
+
+        function importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (!Array.isArray(imported)) throw new Error('Invalid format');
+                    state.characters = imported;
+                    state.activeId = imported.length > 0 ? imported[0].id : null;
+                    saveToStorage();
+                    renderAll();
+                    showToast(`Imported ${imported.length} characters!`, '🎀');
+                } catch (err) {
+                    showToast('Invalid JSON archive file.', '⚠️');
+                }
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        function escapeHTML(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        window.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
